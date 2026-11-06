@@ -1,0 +1,316 @@
+/*
+  Kap.app main styling
+  ----
+  Uses eightpoint (github.com/wulkano/eightpoint as a reset).
+  ( ͡° ͜ʖ ͡°)
+*/
+
+/* Imports: */
+@import 'eightpoint/dist/eight.min';
+@import '_variables';
+@import '_helpers';
+@import '_base';
+@import 'components/_window-header';
+@import 'components/_icons';
+@import 'components/_inputs';
+@import 'components/_buttons';
+@import 'components/_progress';
+
+/* Body */
+body {
+  transition: all .2s ease;
+
+  &.is-recording {
+    .content { height: 152px; }
+    .record { top: 85%; }
+  }
+}
+
+body.is-tray-arrow-hidden {
+  padding-top: 10px;
+}
+
+/* Helper Classes */
+.horizontal-section { display: flex; }
+
+/* Tray Arrow */
+.tray-arrow {
+  margin: auto;
+  width: 0;
+  height: 0;
+  border-right: 1rem solid transparent;
+  border-bottom: 1rem solid $background-primary;
+  border-left: 1rem solid transparent;
+  transition: border-bottom-width .2s ease, border-bottom-color .3s ease;
+}
+
+.content {
+  background-color: white;
+  border-radius: 4px;
+}
+
+
+/* Kap start bar */
+.start-bar {
+  @extend .webkit-drag;
+  width: 100%;
+  position: relative;
+  padding-top: 24px;
+
+  /* Contains all content of the start bar excluding the record button */
+  &__content {
+    display: flex;
+    background-color: $gray-lightest;
+    border-top: 1px solid $gray-light;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 48px;
+    position: relative;
+  }
+
+  &__text {
+    font-size: 1.2rem;
+    height: 2.4rem;
+    cursor: -webkit-grab;
+    color: $color-primary;
+
+    &:hover { color: $color-primary; }
+
+    &:first-child {
+      text-align: right;
+      flex: 1;
+    }
+
+    &:last-child {
+      text-align: left;
+      flex: 1;
+    }
+
+    &.is-active {
+      color: $blue;
+      svg { fill: currentColor; }
+    }
+  }
+
+  svg {
+    fill: $gray-darker;
+    transition: fill .12s ease-in-out;
+
+    &:hover { fill: $blue; }
+  }
+}
+
+.record {
+  @extend .btn;
+  @extend .circle;
+  display: flex;
+  background: $red;
+  width: 64px;
+  height: 64px;
+  justify-content: center;
+  align-items: center;
+  transition: background-color .12s ease-in-out;
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+
+  &.filled { background-color: $red; }
+
+  /*
+    Recording state icon
+    Default state: not recording, but ready to record
+  */
+  &__state {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    border: 2px solid white;
+    border-radius: 50%;
+    transition: border-radius 0.12s ease-in-out, background 0.12s ease-in-out;
+  }
+
+  &.is-cropping .record__state { background: white; }
+
+  &.is-recording .record__state {
+    border-radius: 4px;
+    background: white;
+  }
+
+  svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    transition: background .12s ease-in-out;
+  }
+}
+
+.record-filler {
+  width: 64px;
+  height: 64px;
+  margin: 0 48px;
+}
+
+/*
+  Controls Section
+  ----
+
+  Controls shown in the main Kap window.
+
+*/
+.controls {
+  width: 100%;
+  color: white;
+
+  /* Toggle of controls section */
+  &-toggle {
+    display: flex;
+    height: 3.2rem;
+    width: 100%;
+    align-items: center;
+    font-size: 1.4rem;
+    cursor: pointer;
+    background: #2D2D2D;
+    color: white;
+
+    /* Text inside the toggle */
+    &__title {
+      cursor: pointer !important;
+      margin-left: 1rem;
+    }
+
+    /* Directional transform of arrow in toggle */
+    .triangle.up { transform: rotate(-180deg); }
+  }
+
+
+  /* Container for all controls after toggle has been clicked */
+  &-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Sections within the control content */
+  &-section {
+    padding-top: 1.6rem;
+    padding-bottom: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: white;
+
+    &__title {
+      color: $color-primary;
+      font-size: 1.4rem;
+      letter-spacing: -.010rem;
+      line-height: normal;
+      margin-bottom: 14px;
+      color: white;
+    }
+
+    &__row {
+      display: flex;
+      width: 100%;
+
+      & + .controls-section__row { margin-top: 16px; }
+    }
+  }
+}
+
+
+/* Aspect Ratio Controls */
+.aspect-ratio {
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.aspect-ratio__input {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.aspect-ratio__input input {
+  width: 101px;
+}
+
+.aspect-ratio__options {
+  border-radius: 3px;
+  width: 64px;
+  align-items: flex-start;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+.shake {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+section.progress {
+  @extend .webkit-drag;
+  background-color: $background-primary;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 12.6rem;
+  padding-bottom: 2.8rem; /* to compensate the tittle bar */
+}
+
+.progress-bar {
+  width: 206px;
+}
+
+.progress-bar-label {
+  font-size: 1.2rem;
+  color: $color-primary;
+  margin-bottom: 16px;
+}
+
+.update-notification {
+  @extend .webkit-drag;
+  display: flex;
+  background-color: $green;
+  width: 100%;
+  height: 2.75rem;
+  color: #fff!important;
+  flex-direction: column;
+
+  & span {
+    font-size: 1.2rem;
+  }
+
+  & ul {
+    display: flex;
+    position: absolute;
+    right: .5rem;
+    margin-left: auto;
+
+    & li svg {
+      padding: .25em;
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+  }
+}
