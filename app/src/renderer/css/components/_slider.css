@@ -1,0 +1,58 @@
+/*
+  Slider Styling Component ✏️
+  ----
+  - Used for the trimmer in the editor window
+*/
+
+.slider {
+  -webkit-appearance: none;
+  background: transparent;
+  position: absolute;
+  pointer-events: none;
+  border: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+
+  &#trimmer-in::-webkit-slider-thumb {
+    background: white;
+    margin-left: 4px;
+  }
+  &#trimmer-out::-webkit-slider-thumb {
+    background: white;
+    margin-right: 4px;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-ms-track {
+    width: 100%;
+    height: 0;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    pointer-events: auto;
+    transform: translateY(8px);
+    width: 8px;
+    height: 16px;
+    border-radius: 8px;
+    transition: all .2s ease;
+
+    &:hover {
+      cursor: -webkit-grab;
+      height: 24px;
+    }
+
+    &:active {
+      cursor: -webkit-grabbing;
+      height: 32px;
+    }
+  }
+}
